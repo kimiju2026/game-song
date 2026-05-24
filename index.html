@@ -1,49 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAME & MUSIC</title>
+    <title>◈GameBeat</title>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <style>
-        .pick-card-img-bg {
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            z-index: 1;
-        }
-        .pick-card-img-bg::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.75);
-            border-radius: inherit;
-            z-index: -1;
-        }
-        .audio-player-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-        audio {
-            width: 100%;
-            max-width: 320px;
-            height: 40px;
-            outline: none;
-            filter: invert(0.9) hue-rotate(180deg);
-        }
-    </style>
 </head>
 <body>
 
     <div id="auth-modal-overlay" class="modal-overlay">
         <div class="auth-modal-card" id="login-box">
             <div class="modal-header"><h3>로그인</h3></div>
-            <p class="modal-desc">서비스를 이용하기 위해 로그인해주세요.</p>
+            <p class="modal-desc">GameBeat 서비스를 이용하기 위해 로그인해주세요.</p>
             <div class="auth-form">
                 <input type="text" id="login-id" placeholder="아이디" class="auth-input-field">
                 <input type="password" id="login-pw" placeholder="비밀번호" class="auth-input-field">
@@ -53,7 +23,7 @@
         </div>
         <div class="auth-modal-card hidden" id="register-box">
             <div class="modal-header"><h3>회원가입</h3></div>
-            <p class="modal-desc">새로운 계정을 생성합니다.</p>
+            <p class="modal-desc">새로운 GameBeat 계정을 생성합니다.</p>
             <div class="auth-form">
                 <input type="text" id="reg-id" placeholder="아이디" class="auth-input-field">
                 <input type="password" id="reg-pw" placeholder="비밀번호" class="auth-input-field">
@@ -65,114 +35,131 @@
     </div>
 
     <div class="app-container">
-        <aside class="sidebar">
-            <div class="logo">GAME & MUSIC</div>
-            <nav class="nav-menu">
-                <button class="nav-item active" id="menu-main"><i class="fas fa-home"></i> 메인</button>
+        <header class="top-navbar">
+            <button type="button" class="brand-logo" id="brand-logo-btn" title="메인으로">(◈GameBeat)</button>
+
+            <div class="top-search-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="main-search-input" class="search-input" placeholder="키워드로 게임·음악 검색 (예: 박자감, 슈팅)">
+                <button type="button" id="search-submit-btn" class="search-submit-btn">검색</button>
+            </div>
+
+            <nav class="top-nav-menu">
                 <button class="nav-item" id="menu-genre"><i class="fas fa-th-large"></i> 장르 선택</button>
                 <button class="nav-item" id="menu-result"><i class="fas fa-trophy"></i> 추천 결과</button>
-                <button class="nav-item" id="menu-playlist"><i class="fas fa-heart"></i> 내 플레이리스트</button>
             </nav>
-            <div class="mini-player-box">
-                <p class="mini-label">추천 음악</p>
-                <div class="mini-content">
-                    <i class="fas fa-music disc-icon" id="sidebar-disc-icon"></i>
-                    <div class="mini-info" id="sidebar-mini-info">
-                        <div id="side-track-title">재생 중인 곡 없음</div>
-                        <span id="side-track-sub">Game & Music Flow</span>
-                    </div>
-                    <button id="side-heart-btn" class="save-heart"><i class="far fa-heart"></i></button>
-                </div>
+
+            <div class="top-nav-right">
+                <button id="theme-toggle" class="theme-toggle-btn" type="button">
+                    <i class="fas fa-moon"></i> <span>나이트</span>
+                </button>
+                <button type="button" class="top-profile-chip" id="top-profile-chip" title="프로필">
+                    <span class="top-avatar" id="top-avatar">?</span>
+                    <span class="top-profile-name" id="top-profile-name">프로필</span>
+                </button>
             </div>
-        </aside>
+        </header>
 
         <main class="main-content">
+
             <section id="view-main" class="content-view dashboard-layout">
-                <header class="view-header">
-                    <div class="greeting"><span id="greeting-name">사용자</span>  환영합니다!</div>
-                    <div class="search-area">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="검색" class="search-input">
-                    </div>
-                </header>
-                <div class="center-stack-zone">
-                    <button class="slider-btn prev-btn" id="slide-prev-btn"><i class="fas fa-chevron-left"></i></button>
-                    <div class="main-card-deck" id="card-deck">
-                        <div class="game-main-card active" data-index="0"><h2>FPS 게임</h2><button class="btn-start main-start-btn">시작하기</button></div>
-                        <div class="game-main-card next" data-index="1"><h2>RPG 게임</h2><button class="btn-start main-start-btn">시작하기</button></div>
-                        <div class="game-main-card" data-index="2"><h2>공포 게임</h2><button class="btn-start main-start-btn">시작하기</button></div>
-                        <div class="game-main-card" data-index="3"><h2>힐링 게임</h2><button class="btn-start main-start-btn">시작하기</button></div>
-                        <div class="game-main-card prev" data-index="4"><h2>리듬 게임</h2><button class="btn-start main-start-btn">시작하기</button></div>
-                    </div>
-                    <button class="slider-btn next-btn" id="slide-next-btn"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                <footer class="view-footer">
-                    <div class="ranking-panel">
-                        <div class="rank-tag">추천 순위</div>
-                        <div class="rank-list">
-                            <div><span>1</span> 발로란트 (FPS) X Midnight Coffee</div>
-                            <div><span>2</span> 리그 오브 레전드 (MOBA) X Hard Rock Anthems</div>
-                            <div><span>3</span> 마인크래프트 (Sandbox) X Nature Sounds</div>
+                <div class="main-inner">
+                    <header class="view-header">
+                        <div class="greeting"><span id="greeting-name">사용자</span>님, GameBeat에 오신 것을 환영합니다!</div>
+                    </header>
+
+                    <div id="search-results-panel" class="search-results-panel hidden">
+                        <h3 class="search-results-title"><i class="fas fa-key"></i> 키워드 검색 결과</h3>
+                        <div class="search-results-grid">
+                            <div class="search-col">
+                                <h4>게임</h4>
+                                <ul id="search-games-results" class="search-result-list"></ul>
+                            </div>
+                            <div class="search-col">
+                                <h4>음악</h4>
+                                <ul id="search-music-results" class="search-result-list"></ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="profile-badge">
-                        <span id="user-nickname-tag">사용자 닉네임</span>
-                        <div class="avatar-circle" id="btn-logout" title="로그아웃" style="cursor:pointer;"><i class="fas fa-sign-out-alt"></i></div>
+
+                    <div class="carousel-wrap">
+                        <div class="center-stack-zone" id="carousel-zone">
+                            <button class="slider-btn prev-btn" id="slide-prev-btn" type="button" aria-label="이전 카드"><i class="fas fa-chevron-left"></i></button>
+                            <div class="main-card-deck" id="card-deck">
+                                <div class="game-main-card active" data-index="0"><h2>FPS 게임</h2><button class="btn-start main-start-btn" type="button">시작하기</button></div>
+                                <div class="game-main-card" data-index="1"><h2>RPG 게임</h2><button class="btn-start main-start-btn" type="button">시작하기</button></div>
+                                <div class="game-main-card" data-index="2"><h2>공포 게임</h2><button class="btn-start main-start-btn" type="button">시작하기</button></div>
+                                <div class="game-main-card" data-index="3"><h2>힐링 게임</h2><button class="btn-start main-start-btn" type="button">시작하기</button></div>
+                                <div class="game-main-card" data-index="4"><h2>리듬 게임</h2><button class="btn-start main-start-btn" type="button">시작하기</button></div>
+                            </div>
+                            <button class="slider-btn next-btn" id="slide-next-btn" type="button" aria-label="다음 카드"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="carousel-dots" id="carousel-dots"></div>
+                        <p class="carousel-hint"><i class="fas fa-hand-pointer"></i> 좌우 버튼 · 스와이프 · 키보드 ← → 로 넘길 수 있어요</p>
                     </div>
-                </footer>
+
+                    <footer class="view-footer">
+                        <div class="ranking-panel">
+                            <div class="rank-tag">추천 순위 <span class="live-badge">LIVE</span></div>
+                            <div class="rank-list" id="rank-list"></div>
+                        </div>
+                    </footer>
+                </div>
             </section>
 
             <section id="view-genre" class="content-view hidden">
-                <header class="genre-header">
-                    <div class="logo-small">GAME & MUSIC</div>
-                    <button class="home-link-btn" id="back-to-home"><i class="fas fa-arrow-left"></i> HOME</button>
-                </header>
-                <div class="genre-selection-container">
-                    <div class="genre-title-box">
-                        <div class="icon-pulse"><i class="fas fa-gamepad"></i> <i class="fas fa-music"></i></div>
-                        <h1>원하는 <span class="highlight">장르</span>를 선택하세요!</h1>
-                    </div>
-                    <div class="selection-group">
-                        <p class="group-label">게임 장르</p>
-                        <div class="btn-grid" id="grid-game">
-                            <button class="select-item active">FPS</button>
-                            <button class="select-item">RPG</button>
-                            <button class="select-item">공포</button>
-                            <button class="select-item">힐링</button>
-                            <button class="select-item">리듬게임</button>
+                <div class="page-inner">
+                    <header class="genre-header">
+                        <h1>장르 <span class="highlight">추천</span></h1>
+                        <p class="genre-sub">룰렛·키워드·분위기에 맞춰 최적의 게임과 음악을 매칭합니다</p>
+                    </header>
+                    <div class="genre-selection-container">
+                        <div class="selection-group">
+                            <p class="group-label">게임 장르</p>
+                            <div class="btn-grid" id="grid-game">
+                                <button type="button" class="select-item active">FPS</button>
+                                <button type="button" class="select-item">RPG</button>
+                                <button type="button" class="select-item">공포</button>
+                                <button type="button" class="select-item">힐링</button>
+                                <button type="button" class="select-item">리듬게임</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="selection-group">
-                        <p class="group-label">음악 장르</p>
-                        <div class="btn-grid" id="grid-music">
-                            <button class="select-item active">EDM</button>
-                            <button class="select-item">Lo-fi</button>
-                            <button class="select-item">힙합</button>
-                            <button class="select-item">락</button>
-                            <button class="select-item">클래식</button>
+                        <div class="selection-group">
+                            <p class="group-label">음악 장르</p>
+                            <div class="btn-grid" id="grid-music">
+                                <button type="button" class="select-item active">EDM</button>
+                                <button type="button" class="select-item">Lo-fi</button>
+                                <button type="button" class="select-item">힙합</button>
+                                <button type="button" class="select-item">락</button>
+                                <button type="button" class="select-item">클래식</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="selection-group">
-                        <p class="group-label">분위기</p>
-                        <div class="btn-grid" id="grid-mood">
-                            <button class="select-item active">집중</button>
-                            <button class="select-item">감성</button>
-                            <button class="select-item">텐션업</button>
-                            <button class="select-item">힐링</button>
+                        <div class="selection-group">
+                            <p class="group-label">분위기</p>
+                            <div class="btn-grid" id="grid-mood">
+                                <button type="button" class="select-item active">집중</button>
+                                <button type="button" class="select-item">감성</button>
+                                <button type="button" class="select-item">텐션업</button>
+                                <button type="button" class="select-item">힐링</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="genre-footer">
-                        <button class="btn-recommend-go" id="genre-next-btn"><i class="fas fa-random"></i> 추천 받기</button>
+                        <div class="roulette-zone">
+                            <button id="roulette-spin-btn" class="btn-roulette" type="button">
+                                <i class="fas fa-dharmachakra"></i> 감성 키워드 룰렛
+                            </button>
+                            <div id="roulette-result" class="roulette-result">키워드를 뽑아보세요</div>
+                        </div>
+                        <div class="genre-footer">
+                            <button class="btn-recommend-go" id="genre-next-btn" type="button"><i class="fas fa-random"></i> 키워드 맞춤 추천 받기</button>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <section id="view-result" class="content-view hidden">
-                <div class="result-scroll-box">
-                    <div class="result-title-area">
-                        <h1>TODAY'S PICK ✨</h1>
-                    </div>
-                    <div id="user-welcome-banner" style="text-align: center; font-size: 18px; font-weight: bold; color: #fff; margin: 10px 0 25px 0;">
+                <div class="result-scroll-box page-inner">
+                    <div class="result-title-area"><h1>TODAY'S PICK ✨</h1></div>
+                    <div id="user-welcome-banner" class="welcome-banner">
                         "<span id="result-user-name" class="highlight-green">사용자</span>님을 위한 완벽한 조합"
                     </div>
                     <div class="pick-cards-container">
@@ -202,41 +189,72 @@
                             <div class="video-placeholder wave-bg" id="music-audio-player-zone"></div>
                         </div>
                     </div>
+                    <div class="share-link-bar hidden" id="share-link-bar">
+                        <div class="share-link-bar-head">
+                            <i class="fas fa-link"></i>
+                            <span>Smart Link</span>
+                        </div>
+                        <input type="text" id="share-link-inline" class="share-link-inline-input" readonly placeholder="추천 후 공유 링크가 표시됩니다">
+                        <button type="button" id="copy-link-inline-btn" class="copy-link-inline-btn">복사</button>
+                        <button type="button" id="open-share-btn" class="open-share-modal-btn"><i class="fas fa-share-alt"></i> 공유</button>
+                    </div>
                     <div class="result-actions">
-                        <button class="btn-action-refresh" onclick="location.reload();"><i class="fas fa-sync-alt"></i> 다시 추천 받기</button>
-                        <button class="btn-action-share" id="open-share-btn"><i class="fas fa-share-alt"></i> 공유하기</button>
-                    </div>
-                </div>
-
-                <div id="share-modal-overlay" class="modal-overlay hidden">
-                    <div class="share-modal-card">
-                        <div class="modal-header"><h3>공유하기</h3><button id="close-share-btn" class="modal-close-x">&times;</button></div>
-                        <p class="modal-desc">오늘의 추천 조합을 친구들에게 자랑해 보세요!</p>
-                        <div class="sns-share-grid">
-                            <button class="sns-btn kakao"><div class="sns-icon-circle"><i class="fas fa-comment"></i></div><span>카카오톡</span></button>
-                            <button class="sns-btn facebook"><div class="sns-icon-circle"><i class="fab fa-facebook-f"></i></div><span>페이스북</span></button>
-                            <button class="sns-btn instagram"><div class="sns-icon-circle"><i class="fab fa-instagram"></i></div><span>인스타그램</span></button>
-                        </div>
-                        <div class="copy-link-section">
-                            <input type="text" id="share-link-input" value="https://game-and-music.com/share/pick_id=777" readonly>
-                            <button id="copy-link-btn">링크 복사</button>
-                        </div>
+                        <button class="btn-action-refresh" id="btn-re-recommend" type="button"><i class="fas fa-sync-alt"></i> 다시 추천 받기</button>
+                        <button class="btn-spotify-placeholder" id="btn-spotify-placeholder" type="button" disabled title="Spotify API 연동 준비 중">
+                            <i class="fab fa-spotify"></i> Spotify (준비 중)
+                        </button>
                     </div>
                 </div>
             </section>
 
-            <section id="view-playlist" class="content-view hidden">
-                <div class="playlist-wrap">
-                    <h2>내 플레이리스트</h2>
-                    <p id="playlist-count" style="color: var(--text-sub); margin: 10px 0 20px 0;">저장된 곡: 0곡</p>
-                    <table class="playlist-table">
-                        <thead><tr><th>#</th><th>곡 제목</th><th>관리</th></tr></thead>
-                        <tbody id="playlist-items"></tbody>
-                    </table>
+            <section id="view-profile" class="content-view hidden">
+                <div class="profile-page page-inner">
+                    <div class="profile-header-card">
+                        <div class="profile-avatar" id="profile-avatar">GB</div>
+                        <div class="profile-info-text">
+                            <h2 id="profile-display-name">게스트</h2>
+                            <p id="profile-display-id">@guest</p>
+                        </div>
+                        <button type="button" class="btn-logout-profile" id="btn-logout"><i class="fas fa-sign-out-alt"></i> 로그아웃</button>
+                    </div>
+                    <div class="profile-playlist-section">
+                        <h3><i class="fas fa-heart"></i> 내 플레이리스트</h3>
+                        <p id="playlist-count" class="playlist-count-text">저장된 곡: 0곡</p>
+                        <table class="playlist-table">
+                            <thead>
+                                <tr><th>#</th><th>곡 제목</th><th>관리</th></tr>
+                            </thead>
+                            <tbody id="playlist-items"></tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
+
         </main>
     </div>
+
+    <div id="share-modal-overlay" class="modal-overlay hidden">
+        <div class="share-modal-card">
+            <div class="modal-header">
+                <h3>Smart Link 공유</h3>
+                <button id="close-share-btn" class="modal-close-x" type="button">&times;</button>
+            </div>
+            <p class="modal-desc">오늘의 추천 조합을 친구들에게 자랑해 보세요!</p>
+            <div class="share-link-preview">
+                <input type="text" id="share-link-input" value="" readonly>
+            </div>
+            <div class="sns-share-grid">
+                <button class="sns-btn kakao" id="share-kakao" type="button"><div class="sns-icon-circle"><i class="fas fa-comment"></i></div><span>카카오톡</span></button>
+                <button class="sns-btn facebook" id="share-facebook" type="button"><div class="sns-icon-circle"><i class="fab fa-facebook-f"></i></div><span>페이스북</span></button>
+                <button class="sns-btn instagram" id="share-instagram" type="button"><div class="sns-icon-circle"><i class="fab fa-instagram"></i></div><span>인스타그램</span></button>
+            </div>
+            <div class="copy-link-section">
+                <button id="copy-link-btn" type="button" class="copy-link-full-btn"><i class="fas fa-copy"></i> 링크 복사</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/audio-adapter.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
